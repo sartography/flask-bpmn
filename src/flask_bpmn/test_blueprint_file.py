@@ -1,14 +1,20 @@
-from flask import Blueprint, render_template, abort, current_app
+from flask import abort
+from flask import Blueprint
+from flask import current_app
+from flask import render_template
+from flask_marshmallow import Marshmallow
+from sqlalchemy import select
+
 # from crc import session, ma
 # from crc.models.user import UserModel, UserModelSchema
-from sqlalchemy import select
-from flask_marshmallow import Marshmallow
+
 # from jinja2 import TemplateNotFound
 
-test_blueprint = Blueprint('test_blueprint', __name__)
-                        # template_folder='templates')
+test_blueprint = Blueprint("test_blueprint", __name__)
+# template_folder='templates')
 
-@test_blueprint.route('/test_blueprint1') #, defaults={'page': 'index'})
+
+@test_blueprint.route("/test_blueprint1")  # , defaults={'page': 'index'})
 # @simple_page.route('/<page>')
 def show():
     ma = Marshmallow(current_app)
