@@ -4,12 +4,12 @@ from SpiffWorkflow import WorkflowException
 from SpiffWorkflow.exceptions import WorkflowTaskExecException
 from flask import g, Blueprint, current_app
 from marshmallow import Schema
-from jinja2 import TemplateError
 from werkzeug.exceptions import InternalServerError
 
 import sentry_sdk
 
 common_blueprint = Blueprint('common_blueprint', __name__)
+
 
 class ApiError(Exception):
     def __init__(self, code, message, status_code=400,
@@ -36,7 +36,7 @@ class ApiError(Exception):
 
         try:
             user = g.user.uid
-        except Exception as e:
+        except Exception:
             user = 'Unknown'
         self.task_user = user
         # This is for sentry logging into Slack
