@@ -144,6 +144,7 @@ jobs:
 
       - name: Combine coverage data and display human readable report
         run: |
+          find . -name \*.pyc -delete
           nox --force-color --session=coverage
 
       - name: Create coverage report
