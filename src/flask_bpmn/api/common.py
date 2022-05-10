@@ -1,3 +1,4 @@
+"""Common API functionality."""
 import json
 
 import sentry_sdk
@@ -13,6 +14,7 @@ common_blueprint = Blueprint("common_blueprint", __name__)
 
 
 class ApiError(Exception):
+    """ApiError Class!"""
     def __init__(
         self,
         code,
@@ -29,6 +31,7 @@ class ApiError(Exception):
         offset=0,
         task_trace=None,
     ):
+        """The Init Method!"""
         if task_data is None:
             task_data = {}
         if task_trace is None:
@@ -67,6 +70,7 @@ class ApiError(Exception):
         Exception.__init__(self, self.message)
 
     def __str__(self):
+        """This is Magic?"""
         msg = "ApiError: % s. " % self.message
         if self.task_name:
             msg += f"Error in task '{self.task_name}' ({self.task_id}). "
@@ -115,6 +119,7 @@ class ApiError(Exception):
 
     @staticmethod
     def remove_unserializeable_from_dict(my_dict):
+        """Method name is good."""
         keys_to_delete = []
         for key, value in my_dict.items():
             if not ApiError.is_jsonable(value):
@@ -125,6 +130,7 @@ class ApiError(Exception):
 
     @staticmethod
     def is_jsonable(x):
+        """Attempts a json.dump on given input and returns false if it cannot."""
         try:
             json.dumps(x)
             return True
@@ -144,9 +150,12 @@ class ApiError(Exception):
 
     @classmethod
     def from_workflow_exception(cls, code, message, exp: WorkflowException):
-        """We catch a lot of workflow exception errors,
+        """Deals with workflow exceptions.
+
+        We catch a lot of workflow exception errors,
         so consolidating the code, and doing the best things
-        we can with the data we have."""
+        we can with the data we have.
+        """
         if isinstance(exp, WorkflowTaskExecException):
             return ApiError.from_task(
                 code,
@@ -164,7 +173,9 @@ class ApiError(Exception):
 
 
 class ApiErrorSchema(Schema):
+    """ApiErrorSchema Class."""
     class Meta:
+        """Sets the fields to search the error schema for."""
         fields = (
             "code",
             "message",
@@ -185,12 +196,14 @@ class ApiErrorSchema(Schema):
 
 @common_blueprint.errorhandler(ApiError)
 def handle_invalid_usage(error):
+    """Handles invalid usage error."""
     response = ApiErrorSchema().dump(error)
     return response, error.status_code
 
 
 @common_blueprint.errorhandler(InternalServerError)
 def handle_internal_server_error(e):
+    """Handles internal server error."""
     original = getattr(e, "original_exception", None)
     api_error = ApiError(code="Internal Server Error (500)", message=str(original))
     response = ApiErrorSchema().dump(api_error)
