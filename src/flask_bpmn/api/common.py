@@ -1,21 +1,34 @@
 import json
 
+import sentry_sdk
+from flask import Blueprint
+from flask import current_app
+from flask import g
+from marshmallow import Schema
 from SpiffWorkflow import WorkflowException
 from SpiffWorkflow.exceptions import WorkflowTaskExecException
-from flask import g, Blueprint, current_app
-from marshmallow import Schema
 from werkzeug.exceptions import InternalServerError
 
-import sentry_sdk
-
-common_blueprint = Blueprint('common_blueprint', __name__)
+common_blueprint = Blueprint("common_blueprint", __name__)
 
 
 class ApiError(Exception):
-    def __init__(self, code, message, status_code=400,
-                 file_name="", task_id="", task_name="", tag="",
-                 task_data=None, error_type="", error_line="", line_number=0, offset=0,
-                 task_trace=None):
+    def __init__(
+        self,
+        code,
+        message,
+        status_code=400,
+        file_name="",
+        task_id="",
+        task_name="",
+        tag="",
+        task_data=None,
+        error_type="",
+        error_line="",
+        line_number=0,
+        offset=0,
+        task_trace=None,
+    ):
         if task_data is None:
             task_data = {}
         if task_trace is None:
@@ -23,11 +36,21 @@ class ApiError(Exception):
         self.status_code = status_code
         self.code = code  # a short consistent string describing the error.
         self.message = message  # A detailed message that provides more information.
-        self.task_id = task_id or ""  # OPTIONAL:  The id of the task in the BPMN Diagram.
-        self.task_name = task_name or ""  # OPTIONAL: The name of the task in the BPMN Diagram.
-        self.file_name = file_name or ""  # OPTIONAL: The file that caused the error.
-        self.tag = tag or ""  # OPTIONAL: The XML Tag that caused the issue.
-        self.task_data = task_data or ""  # OPTIONAL: A snapshot of data connected to the task when error occurred.
+
+        # OPTIONAL:  The id of the task in the BPMN Diagram.
+        self.task_id = task_id or ""
+
+        # OPTIONAL: The name of the task in the BPMN Diagram.
+
+        # OPTIONAL: The file that caused the error.
+        self.task_name = task_name or ""
+        self.file_name = file_name or ""
+
+        # OPTIONAL: The XML Tag that caused the issue.
+        self.tag = tag or ""
+
+        # OPTIONAL: A snapshot of data connected to the task when error occurred.
+        self.task_data = task_data or ""
         self.line_number = line_number
         self.offset = offset
         self.error_type = error_type
@@ -37,16 +60,16 @@ class ApiError(Exception):
         try:
             user = g.user.uid
         except Exception:
-            user = 'Unknown'
+            user = "Unknown"
         self.task_user = user
         # This is for sentry logging into Slack
-        sentry_sdk.set_context("User", {'user': user})
+        sentry_sdk.set_context("User", {"user": user})
         Exception.__init__(self, self.message)
 
     def __str__(self):
         msg = "ApiError: % s. " % self.message
         if self.task_name:
-            msg += "Error in task '%s' (%s). " % (self.task_name, self.task_id)
+            msg += f"Error in task '{self.task_name}' ({self.task_id}). "
         if self.line_number:
             msg += "Error is on line %i. " % self.line_number
         if self.file_name:
@@ -54,8 +77,18 @@ class ApiError(Exception):
         return msg
 
     @classmethod
-    def from_task(cls, code, message, task, status_code=400, line_number=0, offset=0, error_type="", error_line="",
-                  task_trace=None):
+    def from_task(
+        cls,
+        code,
+        message,
+        task,
+        status_code=400,
+        line_number=0,
+        offset=0,
+        error_type="",
+        error_line="",
+        task_trace=None,
+    ):
         """Constructs an API Error with details pulled from the current task."""
         instance = cls(code, message, status_code=status_code)
         instance.task_id = task.task_spec.name or ""
@@ -112,14 +145,19 @@ class ApiError(Exception):
     @classmethod
     def from_workflow_exception(cls, code, message, exp: WorkflowException):
         """We catch a lot of workflow exception errors,
-            so consolidating the code, and doing the best things
-            we can with the data we have."""
+        so consolidating the code, and doing the best things
+        we can with the data we have."""
         if isinstance(exp, WorkflowTaskExecException):
-            return ApiError.from_task(code, message, exp.task, line_number=exp.line_number,
-                                      offset=exp.offset,
-                                      error_type=exp.exception.__class__.__name__,
-                                      error_line=exp.error_line,
-                                      task_trace=exp.task_trace)
+            return ApiError.from_task(
+                code,
+                message,
+                exp.task,
+                line_number=exp.line_number,
+                offset=exp.offset,
+                error_type=exp.exception.__class__.__name__,
+                error_line=exp.error_line,
+                task_trace=exp.task_trace,
+            )
 
         else:
             return ApiError.from_task_spec(code, message, exp.sender)
@@ -127,9 +165,22 @@ class ApiError(Exception):
 
 class ApiErrorSchema(Schema):
     class Meta:
-        fields = ("code", "message", "workflow_name", "file_name", "task_name", "task_id",
-                  "task_data", "task_user", "hint", "line_number", "offset", "error_type",
-                  "error_line", "task_trace")
+        fields = (
+            "code",
+            "message",
+            "workflow_name",
+            "file_name",
+            "task_name",
+            "task_id",
+            "task_data",
+            "task_user",
+            "hint",
+            "line_number",
+            "offset",
+            "error_type",
+            "error_line",
+            "task_trace",
+        )
 
 
 @common_blueprint.errorhandler(ApiError)
@@ -141,6 +192,6 @@ def handle_invalid_usage(error):
 @common_blueprint.errorhandler(InternalServerError)
 def handle_internal_server_error(e):
     original = getattr(e, "original_exception", None)
-    api_error = ApiError(code='Internal Server Error (500)', message=str(original))
+    api_error = ApiError(code="Internal Server Error (500)", message=str(original))
     response = ApiErrorSchema().dump(api_error)
     return response, 500
