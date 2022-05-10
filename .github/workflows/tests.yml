@@ -96,6 +96,7 @@ jobs:
           nox --force-color --python=${{ matrix.python }}
 
       - name: Upload coverage data
+        # pin to upload coverage from only one matrix entry, otherwise coverage gets confused later
         if: always() && matrix.session == 'tests' && matrix.python == '3.10' && matrix.os == 'ubuntu-latest'
         uses: "actions/upload-artifact@v3.0.0"
         with:
