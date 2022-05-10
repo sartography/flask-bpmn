@@ -15,7 +15,7 @@ def show():
     current_app.logger.error("THIS IS TEH LOGGER", exc_info=True)
     current_app.logger.error(ma, exc_info=True)
     print(current_app)
-    return "HELLO6"
+    return "HELLO8"
     # result = db.session.execute(select(UserModel).order_by(UserModel.id))
     # all_users = session.query(UserModel).all()
     # print(UserModelSchema(many=True).dump(all_users))
