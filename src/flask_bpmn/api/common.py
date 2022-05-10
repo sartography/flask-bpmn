@@ -1,14 +1,19 @@
 """Common API functionality."""
 import json
 
-import sentry_sdk
+import sentry_sdk  # type: ignore
 from flask import Blueprint
 from flask import current_app
 from flask import g
 from marshmallow import Schema
-from SpiffWorkflow import WorkflowException
-from SpiffWorkflow.exceptions import WorkflowTaskExecException
+from SpiffWorkflow import WorkflowException  # type: ignore
+from SpiffWorkflow.exceptions import WorkflowTaskExecException  # type: ignore
+from SpiffWorkflow.task import Task  # type: ignore
+from SpiffWorkflow.spec.base import TaskSpec  # type: ignore
 from werkzeug.exceptions import InternalServerError
+
+from __future__ import annotations
+from typing import Any
 
 common_blueprint = Blueprint("common_blueprint", __name__)
 
@@ -18,20 +23,20 @@ class ApiError(Exception):
 
     def __init__(
         self,
-        code,
-        message,
-        status_code=400,
-        file_name="",
-        task_id="",
-        task_name="",
-        tag="",
-        task_data=None,
-        error_type="",
-        error_line="",
-        line_number=0,
-        offset=0,
-        task_trace=None,
-    ):
+        code: str,
+        message: str,
+        status_code: int = 400,
+        file_name: str = "",
+        task_id: str = "",
+        task_name: str = "",
+        tag: str = "",
+        task_data: dict | None | str = None,
+        error_type: str = "",
+        error_line: str = "",
+        line_number: int = 0,
+        offset: int = 0,
+        task_trace: dict | None = None,
+    ) -> None:
         """The Init Method!"""
         if task_data is None:
             task_data = {}
@@ -70,7 +75,7 @@ class ApiError(Exception):
         sentry_sdk.set_context("User", {"user": user})
         Exception.__init__(self, self.message)
 
-    def __str__(self):
+    def __str__(self) -> str:
         """This is Magic?"""
         msg = "ApiError: % s. " % self.message
         if self.task_name:
@@ -84,16 +89,16 @@ class ApiError(Exception):
     @classmethod
     def from_task(
         cls,
-        code,
-        message,
-        task,
-        status_code=400,
-        line_number=0,
-        offset=0,
-        error_type="",
-        error_line="",
-        task_trace=None,
-    ):
+        code: str,
+        message: str,
+        task: Task,
+        status_code: int = 400,
+        line_number: int = 0,
+        offset: int = 0,
+        error_type: str = "",
+        error_line: str = "",
+        task_trace: dict | None = None,
+    ) -> ApiError:
         """Constructs an API Error with details pulled from the current task."""
         instance = cls(code, message, status_code=status_code)
         instance.task_id = task.task_spec.name or ""
@@ -119,7 +124,7 @@ class ApiError(Exception):
         return instance
 
     @staticmethod
-    def remove_unserializeable_from_dict(my_dict):
+    def remove_unserializeable_from_dict(my_dict: dict) -> dict:
         """Method name is good."""
         keys_to_delete = []
         for key, value in my_dict.items():
@@ -130,7 +135,7 @@ class ApiError(Exception):
         return my_dict
 
     @staticmethod
-    def is_jsonable(x):
+    def is_jsonable(x: Any) -> bool:
         """Attempts a json.dump on given input and returns false if it cannot."""
         try:
             json.dumps(x)
@@ -139,7 +144,13 @@ class ApiError(Exception):
             return False
 
     @classmethod
-    def from_task_spec(cls, code, message, task_spec, status_code=400):
+    def from_task_spec(
+        cls,
+        code: str,
+        message: str,
+        task_spec: TaskSpec,
+        status_code: int = 400,
+    ) -> ApiError:
         """Constructs an API Error with details pulled from the current task."""
         instance = cls(code, message, status_code=status_code)
         instance.task_id = task_spec.name or ""
@@ -150,7 +161,12 @@ class ApiError(Exception):
         return instance
 
     @classmethod
-    def from_workflow_exception(cls, code, message, exp: WorkflowException):
+    def from_workflow_exception(
+        cls,
+        code: str,
+        message: str,
+        exp: WorkflowException,
+    ) -> ApiError:
         """Deals with workflow exceptions.
 
         We catch a lot of workflow exception errors,
@@ -198,16 +214,16 @@ class ApiErrorSchema(Schema):
 
 
 @common_blueprint.errorhandler(ApiError)
-def handle_invalid_usage(error):
+def handle_invalid_usage(error: ApiError) -> tuple[str, int]:
     """Handles invalid usage error."""
     response = ApiErrorSchema().dump(error)
     return response, error.status_code
 
 
 @common_blueprint.errorhandler(InternalServerError)
-def handle_internal_server_error(e):
+def handle_internal_server_error(error: ApiError) -> tuple[str, int]:
     """Handles internal server error."""
-    original = getattr(e, "original_exception", None)
+    original = getattr(error, "original_exception", None)
     api_error = ApiError(code="Internal Server Error (500)", message=str(original))
     response = ApiErrorSchema().dump(api_error)
     return response, 500

@@ -1,7 +1,7 @@
 """Tests a blueprint file."""
 from flask import Blueprint
 from flask import current_app
-from flask_marshmallow import Marshmallow
+from flask_marshmallow import Marshmallow  # type: ignore
 
 # from crc import session, ma
 # from crc.models.user import UserModel, UserModelSchema
@@ -14,7 +14,7 @@ test_blueprint = Blueprint("test_blueprint", __name__)
 
 @test_blueprint.route("/test_blueprint1")  # , defaults={'page': 'index'})
 # @simple_page.route('/<page>')
-def show():
+def show() -> str:
     """Test flask action from blueprint."""
     ma = Marshmallow(current_app)
     current_app.logger.error("THIS IS TEH LOGGER", exc_info=True)
