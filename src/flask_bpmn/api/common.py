@@ -1,5 +1,8 @@
 """Common API functionality."""
+from __future__ import annotations
+
 import json
+from typing import Any
 
 import sentry_sdk  # type: ignore
 from flask import Blueprint
@@ -8,12 +11,9 @@ from flask import g
 from marshmallow import Schema
 from SpiffWorkflow import WorkflowException  # type: ignore
 from SpiffWorkflow.exceptions import WorkflowTaskExecException  # type: ignore
-from SpiffWorkflow.task import Task  # type: ignore
 from SpiffWorkflow.spec.base import TaskSpec  # type: ignore
+from SpiffWorkflow.task import Task  # type: ignore
 from werkzeug.exceptions import InternalServerError
-
-from __future__ import annotations
-from typing import Any
 
 common_blueprint = Blueprint("common_blueprint", __name__)
 
