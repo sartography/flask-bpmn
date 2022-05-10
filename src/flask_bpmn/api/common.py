@@ -15,6 +15,7 @@ common_blueprint = Blueprint("common_blueprint", __name__)
 
 class ApiError(Exception):
     """ApiError Class!"""
+
     def __init__(
         self,
         code,
@@ -174,8 +175,10 @@ class ApiError(Exception):
 
 class ApiErrorSchema(Schema):
     """ApiErrorSchema Class."""
+
     class Meta:
         """Sets the fields to search the error schema for."""
+
         fields = (
             "code",
             "message",
