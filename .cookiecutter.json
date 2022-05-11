@@ -1,6 +1,6 @@
 {
   "_template": "gh:cjolowicz/cookiecutter-hypermodern-python",
-  "author": "Jason Lantz",
+  "author": "Sartography",
   "development_status": "Development Status :: 1 - Planning",
   "email": "jasquat@users.noreply.github.com",
   "friendly_name": "Flask Bpmn",
@@ -8,5 +8,5 @@
   "license": "MIT",
   "package_name": "flask_bpmn",
   "project_name": "flask-bpmn",
-  "version": "0.0.0"
+  "version": "0.0.1"
 }
