@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
-import sentry_sdk  # type: ignore
+import sentry_sdk
 from flask import Blueprint
 from flask import current_app
 from flask import g
