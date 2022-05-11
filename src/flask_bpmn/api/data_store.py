@@ -5,19 +5,21 @@ from datetime import datetime
 from crc.models.data_store import DataStoreModel
 from crc.models.data_store import DataStoreSchema
 from crc.services.data_store_service import DataStoreBase
+from sqlalchemy.orm import Session  # type: ignore
 from flask import Blueprint
+from typing import Any
 
 from flask_bpmn.api.api_error import ApiError
 
 # from crc import session
 
 
-def construct_blueprint(database_session):
+def construct_blueprint(database_session: Session) -> Blueprint:
     """Construct_blueprint."""
     myblueprint = Blueprint("data_store", __name__)
     database_session = database_session
 
-    def study_multi_get(study_id):
+    def study_multi_get(study_id: str) -> Any:
         """Get all data_store values for a given study_id study."""
         if study_id is None:
             raise ApiError("unknown_study", "Please provide a valid Study ID.")
@@ -27,7 +29,7 @@ def construct_blueprint(database_session):
         results = DataStoreSchema(many=True).dump(retval)
         return results
 
-    def user_multi_get(user_id):
+    def user_multi_get(user_id: str) -> Any:
         """Get all data values in the data_store for a userid."""
         if user_id is None:
             raise ApiError("unknown_study", "Please provide a valid UserID.")
