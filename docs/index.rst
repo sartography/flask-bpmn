@@ -13,4 +13,4 @@
    contributing
    Code of Conduct <codeofconduct>
    License <license>
-   Changelog <https://github.com/jasquat/flask-bpmn/releases>
+   Changelog <https://github.com/sartography/flask-bpmn/releases>

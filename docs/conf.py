@@ -6,13 +6,12 @@ project = "Flask Bpmn"
 author = "Sartography"
 copyright = f"{datetime.now().year}, {author}"
 extensions = [
-    "sphinx.ext.autodoc",
-    'sphinx.ext.autosummary',  # Create neat summary tables
     "sphinx.ext.napoleon",
+    "autoapi.extension",
     "sphinx_click",
 ]
 
-autosummary_generate = True  # Turn on sphinx.ext.autosummary
-
-autodoc_typehints = "description"
+# https://github.com/readthedocs/sphinx-autoapi
+autoapi_type = "python"
+autoapi_dirs = ["../src"]
 html_theme = "furo"
