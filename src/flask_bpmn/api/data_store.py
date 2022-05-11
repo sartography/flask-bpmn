@@ -10,12 +10,13 @@ from crc.services.data_store_service import DataStoreBase
 
 from flask import Blueprint
 
+
 def construct_blueprint(database_session):
     myblueprint = Blueprint('data_store', __name__)
     database_session = database_session
 
     def study_multi_get(study_id):
-        """Get all data_store values for a given study_id study"""
+        """Get all data_store values for a given study_id study."""
         if study_id is None:
             raise ApiError('unknown_study', 'Please provide a valid Study ID.')
 
@@ -25,7 +26,7 @@ def construct_blueprint(database_session):
         return results
 
     def user_multi_get(user_id):
-        """Get all data values in the data_store for a userid"""
+        """Get all data values in the data_store for a userid."""
         if user_id is None:
             raise ApiError('unknown_study', 'Please provide a valid UserID.')
 
@@ -35,7 +36,7 @@ def construct_blueprint(database_session):
         return results
 
     def file_multi_get(file_id):
-        """Get all data values in the data store for a file_id"""
+        """Get all data values in the data store for a file_id."""
         if file_id is None:
             raise ApiError(code='unknown_file', message='Please provide a valid file id.')
         dsb = DataStoreBase()
@@ -44,20 +45,20 @@ def construct_blueprint(database_session):
         return results
 
     def datastore_del(id):
-        """Delete a data store item for a key"""
+        """Delete a data store item for a key."""
         database_session.query(DataStoreModel).filter_by(id=id).delete()
         database_session.commit()
         json_value = json.dumps('deleted', ensure_ascii=False, indent=2)
         return json_value
 
     def datastore_get(id):
-        """retrieve a data store item by a key"""
+        """Retrieve a data store item by a key."""
         item = database_session.query(DataStoreModel).filter_by(id=id).first()
         results = DataStoreSchema(many=False).dump(item)
         return results
 
     def update_datastore(id, body):
-        """allow a modification to a datastore item """
+        """Allow a modification to a datastore item."""
         if id is None:
             raise ApiError('unknown_id', 'Please provide a valid ID.')
 
@@ -72,8 +73,7 @@ def construct_blueprint(database_session):
         return DataStoreSchema().dump(item)
 
     def add_datastore(body):
-        """ add a new datastore item """
-
+        """Add a new datastore item."""
         if body.get(id, None):
             raise ApiError('id_specified', 'You may not specify an id for a new datastore item')
 

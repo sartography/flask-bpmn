@@ -7,6 +7,5 @@ import click
 def main() -> None:
     """Flask Bpmn."""
 
-
 if __name__ == "__main__":
     main(prog_name="flask-bpmn")  # pragma: no cover
