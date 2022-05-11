@@ -73,7 +73,7 @@ source = ["flask_bpmn", "tests"]
 
 [tool.coverage.report]
 show_missing = true
-fail_under = 100
+fail_under = 50
 
 [tool.mypy]
 strict = true
