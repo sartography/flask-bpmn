@@ -2,18 +2,18 @@
 name = "flask-bpmn"
 version = "0.0.0"
 description = "Flask Bpmn"
-authors = ["Jason Lantz <jasquat@users.noreply.github.com>"]
+authors = ["Jason Lantz <sartography@users.noreply.github.com>"]
 license = "MIT"
 readme = "README.rst"
-homepage = "https://github.com/jasquat/flask-bpmn"
-repository = "https://github.com/jasquat/flask-bpmn"
+homepage = "https://github.com/sartography/flask-bpmn"
+repository = "https://github.com/sartography/flask-bpmn"
 documentation = "https://flask-bpmn.readthedocs.io"
 classifiers = [
     "Development Status :: 1 - Planning",
 ]
 
 [tool.poetry.urls]
-Changelog = "https://github.com/jasquat/flask-bpmn/releases"
+Changelog = "https://github.com/sartography/flask-bpmn/releases"
 
 [tool.poetry.dependencies]
 python = "^3.7"

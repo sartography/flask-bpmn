@@ -22,11 +22,11 @@ Flask Bpmn
 .. |Read the Docs| image:: https://img.shields.io/readthedocs/flask-bpmn/latest.svg?label=Read%20the%20Docs
    :target: https://flask-bpmn.readthedocs.io/
    :alt: Read the documentation at https://flask-bpmn.readthedocs.io/
-.. |Tests| image:: https://github.com/jasquat/flask-bpmn/workflows/Tests/badge.svg
-   :target: https://github.com/jasquat/flask-bpmn/actions?workflow=Tests
+.. |Tests| image:: https://github.com/sartography/flask-bpmn/workflows/Tests/badge.svg
+   :target: https://github.com/sartography/flask-bpmn/actions?workflow=Tests
    :alt: Tests
-.. |Codecov| image:: https://codecov.io/gh/jasquat/flask-bpmn/branch/main/graph/badge.svg
-   :target: https://codecov.io/gh/jasquat/flask-bpmn
+.. |Codecov| image:: https://codecov.io/gh/sartography/flask-bpmn/branch/main/graph/badge.svg
+   :target: https://codecov.io/gh/sartography/flask-bpmn
    :alt: Codecov
 .. |pre-commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white
    :target: https://github.com/pre-commit/pre-commit
@@ -95,7 +95,7 @@ This project was generated from `@cjolowicz`_'s `Hypermodern Python Cookiecutter
 .. _MIT license: https://opensource.org/licenses/MIT
 .. _PyPI: https://pypi.org/
 .. _Hypermodern Python Cookiecutter: https://github.com/cjolowicz/cookiecutter-hypermodern-python
-.. _file an issue: https://github.com/jasquat/flask-bpmn/issues
+.. _file an issue: https://github.com/sartography/flask-bpmn/issues
 .. _pip: https://pip.pypa.io/
 .. github-only
 .. _Contributor Guide: CONTRIBUTING.rst

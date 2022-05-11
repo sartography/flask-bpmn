@@ -13,9 +13,9 @@ Here is a list of important resources for contributors:
 - `Code of Conduct`_
 
 .. _MIT license: https://opensource.org/licenses/MIT
-.. _Source Code: https://github.com/jasquat/flask-bpmn
+.. _Source Code: https://github.com/sartography/flask-bpmn
 .. _Documentation: https://flask-bpmn.readthedocs.io/
-.. _Issue Tracker: https://github.com/jasquat/flask-bpmn/issues
+.. _Issue Tracker: https://github.com/sartography/flask-bpmn/issues
 
 How to report a bug
 -------------------
@@ -118,6 +118,6 @@ To run linting and code formatting checks before committing your change, you can
 It is recommended to open an issue before starting work on anything.
 This will allow a chance to talk it over with the owners and validate your approach.
 
-.. _pull request: https://github.com/jasquat/flask-bpmn/pulls
+.. _pull request: https://github.com/sartography/flask-bpmn/pulls
 .. github-only
 .. _Code of Conduct: CODE_OF_CONDUCT.rst
