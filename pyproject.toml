@@ -27,8 +27,7 @@ flask-marshmallow = "*"
 flask-migrate = "*"
 flask-restful = "*"
 werkzeug = "*"
-
-spiffworkflow = {git = "https://github.com/sartography/SpiffWorkflow", rev = "e47072ff88d7121c01861b08851e5b6f6fbf6609"}
+spiffworkflow = {git = "https://github.com/sartography/SpiffWorkflow", rev = "main"}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"

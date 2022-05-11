@@ -11,7 +11,7 @@ from flask import g
 from marshmallow import Schema
 from SpiffWorkflow import WorkflowException  # type: ignore
 from SpiffWorkflow.exceptions import WorkflowTaskExecException  # type: ignore
-from SpiffWorkflow.spec.base import TaskSpec  # type: ignore
+from SpiffWorkflow.specs.base import TaskSpec  # type: ignore
 from SpiffWorkflow.task import Task  # type: ignore
 from werkzeug.exceptions import InternalServerError
 
@@ -213,14 +213,14 @@ class ApiErrorSchema(Schema):
         )
 
 
-@common_blueprint.errorhandler(ApiError)
+@common_blueprint.app_errorhandler(ApiError)
 def handle_invalid_usage(error: ApiError) -> tuple[str, int]:
     """Handles invalid usage error."""
     response = ApiErrorSchema().dump(error)
     return response, error.status_code
 
 
-@common_blueprint.errorhandler(InternalServerError)
+@common_blueprint.app_errorhandler(InternalServerError)
 def handle_internal_server_error(error: ApiError) -> tuple[str, int]:
     """Handles internal server error."""
     original = getattr(error, "original_exception", None)
