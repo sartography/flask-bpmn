@@ -1,4 +1,4 @@
-"""Common API functionality."""
+"""API Error functionality."""
 from __future__ import annotations
 
 import json
@@ -19,7 +19,7 @@ api_exception_blueprint = Blueprint("api_exception_blueprint", __name__)
 
 
 class ApiError(Exception):
-    """ApiError Class!"""
+    """ApiError Class to help handle exceptions."""
 
     def __init__(
         self,
@@ -37,7 +37,7 @@ class ApiError(Exception):
         offset: int = 0,
         task_trace: dict | None = None,
     ) -> None:
-        """The Init Method!"""
+        """The Init Method."""
         if task_data is None:
             task_data = {}
         if task_trace is None:
@@ -76,7 +76,7 @@ class ApiError(Exception):
         Exception.__init__(self, self.message)
 
     def __str__(self) -> str:
-        """This is Magic?"""
+        """Instructions to print instance as a string."""
         msg = "ApiError: % s. " % self.message
         if self.task_name:
             msg += f"Error in task '{self.task_name}' ({self.task_id}). "
@@ -125,7 +125,7 @@ class ApiError(Exception):
 
     @staticmethod
     def remove_unserializeable_from_dict(my_dict: dict) -> dict:
-        """Method name is good."""
+        """Removes unserializeable from dict."""
         keys_to_delete = []
         for key, value in my_dict.items():
             if not ApiError.is_jsonable(value):
