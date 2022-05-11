@@ -12,6 +12,7 @@ from flask import Blueprint
 
 
 def construct_blueprint(database_session):
+    """Construct_blueprint."""
     myblueprint = Blueprint('data_store', __name__)
     database_session = database_session
 

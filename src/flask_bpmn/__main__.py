@@ -6,7 +6,7 @@ import click
 @click.version_option()
 def main() -> None:
     """Flask Bpmn."""
-    print "Hello"
+    print("This does nothing")
 
 
 if __name__ == "__main__":
