@@ -15,7 +15,7 @@ from SpiffWorkflow.specs.base import TaskSpec  # type: ignore
 from SpiffWorkflow.task import Task  # type: ignore
 from werkzeug.exceptions import InternalServerError
 
-api_exception_blueprint = Blueprint("api_exception_blueprint", __name__)
+api_error_blueprint = Blueprint("api_error_blueprint", __name__)
 
 
 class ApiError(Exception):
@@ -213,14 +213,14 @@ class ApiErrorSchema(Schema):
         )
 
 
-@api_exception_blueprint.app_errorhandler(ApiError)
+@api_error_blueprint.app_errorhandler(ApiError)
 def handle_invalid_usage(error: ApiError) -> tuple[str, int]:
     """Handles invalid usage error."""
     response = ApiErrorSchema().dump(error)
     return response, error.status_code
 
 
-@api_exception_blueprint.app_errorhandler(InternalServerError)
+@api_error_blueprint.app_errorhandler(InternalServerError)
 def handle_internal_server_error(error: ApiError) -> tuple[str, int]:
     """Handles internal server error."""
     original = getattr(error, "original_exception", None)
