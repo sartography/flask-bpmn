@@ -39,7 +39,7 @@ def construct_blueprint(database_session: Session) -> Blueprint:
         results = DataStoreSchema(many=True).dump(retval)
         return results
 
-    def file_multi_get(file_id):
+    def file_multi_get(file_id: str) -> Any:
         """Get all data values in the data store for a file_id."""
         if file_id is None:
             raise ApiError(
@@ -50,20 +50,20 @@ def construct_blueprint(database_session: Session) -> Blueprint:
         results = DataStoreSchema(many=True).dump(retval)
         return results
 
-    def datastore_del(id):
+    def datastore_del(id: str) -> Any:
         """Delete a data store item for a key."""
         database_session.query(DataStoreModel).filter_by(id=id).delete()
         database_session.commit()
         json_value = json.dumps("deleted", ensure_ascii=False, indent=2)
         return json_value
 
-    def datastore_get(id):
+    def datastore_get(id: str) -> Any:
         """Retrieve a data store item by a key."""
         item = database_session.query(DataStoreModel).filter_by(id=id).first()
         results = DataStoreSchema(many=False).dump(item)
         return results
 
-    def update_datastore(id, body):
+    def update_datastore(id: str, body: dict) -> Any:
         """Allow a modification to a datastore item."""
         if id is None:
             raise ApiError("unknown_id", "Please provide a valid ID.")
@@ -78,7 +78,7 @@ def construct_blueprint(database_session: Session) -> Blueprint:
         database_session.commit()
         return DataStoreSchema().dump(item)
 
-    def add_datastore(body):
+    def add_datastore(body: dict) -> Any:
         """Add a new datastore item."""
         if body.get(id, None):
             raise ApiError(
