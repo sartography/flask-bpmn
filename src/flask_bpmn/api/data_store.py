@@ -16,7 +16,7 @@ from flask_bpmn.api.api_error import ApiError
 
 def construct_blueprint(database_session: Session) -> Blueprint:
     """Construct_blueprint."""
-    myblueprint = Blueprint("data_store", __name__)
+    data_store_blueprint = Blueprint("data_store", __name__)
     database_session = database_session
 
     def study_multi_get(study_id: str) -> Any:
@@ -119,4 +119,4 @@ def construct_blueprint(database_session: Session) -> Blueprint:
         database_session.commit()
         return DataStoreSchema().dump(item)
 
-    return myblueprint
+    return data_store_blueprint
