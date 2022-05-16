@@ -1,16 +1,23 @@
+"""Workflow."""
 import enum
 
 import marshmallow
-from marshmallow import EXCLUDE, post_load, fields, INCLUDE
+from marshmallow import post_load
+from marshmallow import Schema
 from sqlalchemy import func
 from sqlalchemy.orm import deferred
 
-from crc import db, ma
+from flask_bpmn.models.db import db
 
 
-class WorkflowSpecCategory(object):
+class WorkflowSpecCategory:
+    """WorkflowSpecCategory."""
+
     def __init__(self, id, display_name, display_order=0, admin=False):
-        self.id = id  # A unique string name, lower case, under scores (ie, 'my_category')
+        """__init__."""
+        self.id = (
+            id  # A unique string name, lower case, under scores (ie, 'my_category')
+        )
         self.display_name = display_name
         self.display_order = display_order
         self.admin = admin
@@ -19,6 +26,7 @@ class WorkflowSpecCategory(object):
         self.meta = None  # For storing category metadata
 
     def __eq__(self, other):
+        """__eq__."""
         if not isinstance(other, WorkflowSpecCategory):
             return False
         if other.id == self.id:
@@ -26,20 +34,40 @@ class WorkflowSpecCategory(object):
         return False
 
 
-class WorkflowSpecCategorySchema(ma.Schema):
+class WorkflowSpecCategorySchema(Schema):
+    """WorkflowSpecCategorySchema."""
+
     class Meta:
+        """Meta."""
+
         model = WorkflowSpecCategory
         fields = ["id", "display_name", "display_order", "admin"]
 
     @post_load
     def make_cat(self, data, **kwargs):
+        """Make_cat."""
         return WorkflowSpecCategory(**data)
 
 
-class WorkflowSpecInfo(object):
-    def __init__(self, id, display_name, description,  is_master_spec=False,
-                 standalone=False, library=False, primary_file_name='', primary_process_id='',
-                 libraries=[], category_id="", display_order=0, is_review=False):
+class WorkflowSpecInfo:
+    """WorkflowSpecInfo."""
+
+    def __init__(
+        self,
+        id,
+        display_name,
+        description,
+        is_master_spec=False,
+        standalone=False,
+        library=False,
+        primary_file_name="",
+        primary_process_id="",
+        libraries=[],
+        category_id="",
+        display_order=0,
+        is_review=False,
+    ):
+        """__init__."""
         self.id = id  # Sting unique id
         self.display_name = display_name
         self.description = description
@@ -54,6 +82,7 @@ class WorkflowSpecInfo(object):
         self.category_id = category_id
 
     def __eq__(self, other):
+        """__eq__."""
         if not isinstance(other, WorkflowSpecInfo):
             return False
         if other.id == self.id:
@@ -61,9 +90,14 @@ class WorkflowSpecInfo(object):
         return False
 
 
-class WorkflowSpecInfoSchema(ma.Schema):
+class WorkflowSpecInfoSchema(Schema):
+    """WorkflowSpecInfoSchema."""
+
     class Meta:
+        """Meta."""
+
         model = WorkflowSpecInfo
+
     id = marshmallow.fields.String(required=True)
     display_name = marshmallow.fields.String(required=True)
     description = marshmallow.fields.String()
@@ -79,10 +113,13 @@ class WorkflowSpecInfoSchema(ma.Schema):
 
     @post_load
     def make_spec(self, data, **kwargs):
+        """Make_spec."""
         return WorkflowSpecInfo(**data)
 
 
 class WorkflowState(enum.Enum):
+    """WorkflowState."""
+
     hidden = "hidden"
     disabled = "disabled"
     required = "required"
@@ -91,14 +128,18 @@ class WorkflowState(enum.Enum):
 
     @classmethod
     def has_value(cls, value):
+        """Has_value."""
         return value in cls._value2member_map_
 
     @staticmethod
     def list():
+        """List."""
         return list(map(lambda c: c.value, WorkflowState))
 
 
 class WorkflowStatus(enum.Enum):
+    """WorkflowStatus."""
+
     not_started = "not_started"
     user_input_required = "user_input_required"
     waiting = "waiting"
@@ -107,12 +148,14 @@ class WorkflowStatus(enum.Enum):
 
 
 class WorkflowModel(db.Model):
-    __tablename__ = 'workflow'
+    """WorkflowModel."""
+
+    __tablename__ = "workflow"
     id = db.Column(db.Integer, primary_key=True)
     bpmn_workflow_json = deferred(db.Column(db.JSON))
     status = db.Column(db.Enum(WorkflowStatus))
-    study_id = db.Column(db.Integer, db.ForeignKey('study.id'))
-    study = db.relationship("StudyModel", backref='workflow', lazy='select')
+    study_id = db.Column(db.Integer, db.ForeignKey("study.id"))
+    study = db.relationship("StudyModel", backref="workflow", lazy="select")
     workflow_spec_id = db.Column(db.String)
     total_tasks = db.Column(db.Integer, default=0)
     completed_tasks = db.Column(db.Integer, default=0)
