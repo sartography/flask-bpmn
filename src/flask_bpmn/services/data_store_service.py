@@ -1,11 +1,11 @@
 """Data_store_service."""
-from flask_bpmn.models.workflow import WorkflowModel
 from flask import g
 from sqlalchemy import desc
 
 from flask_bpmn.api.api_error import ApiError
 from flask_bpmn.models.data_store import DataStoreModel
 from flask_bpmn.models.db import db
+from flask_bpmn.models.workflow import WorkflowModel
 
 
 class DataStoreBase:
@@ -47,10 +47,12 @@ class DataStoreBase:
     def get_validate_common(
         self, script_name, study_id=None, user_id=None, file_id=None, *args
     ):
-        # This method uses a temporary validation_data_store that is only available for the current validation request.
-        # This allows us to set data_store values during validation that don't affect the real data_store.
-        # For data_store `gets`, we first look in the temporary validation_data_store.
-        # If we don't find an entry in validation_data_store, we look in the real data_store.
+        """This method uses a temporary validation_data_store that is only available for the current validation request.
+
+        This allows us to set data_store values during validation that don't affect the real data_store.
+        For data_store `gets`, we first look in the temporary validation_data_store.
+        If we don't find an entry in validation_data_store, we look in the real data_store.
+        """
         key = args[0]
         if script_name == "study_data_get":
             # If it's in the validation data store, return it
@@ -205,8 +207,10 @@ class DataStoreBase:
     @staticmethod
     def delete_extra_data_stores(records):
         """We had a bug where we created new records instead of updating existing records.
+
         We use this to clean up all the extra records.
-        We may remove this method in the future."""
+        We may remove this method in the future.
+        """
         for record in records:
             db.session.query(DataStoreModel).filter(
                 DataStoreModel.id == record.id

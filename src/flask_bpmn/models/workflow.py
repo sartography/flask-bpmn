@@ -62,7 +62,7 @@ class WorkflowSpecInfo:
         library=False,
         primary_file_name="",
         primary_process_id="",
-        libraries=[],
+        libraries=None,
         category_id="",
         display_order=0,
         is_review=False,
@@ -78,8 +78,10 @@ class WorkflowSpecInfo:
         self.primary_file_name = primary_file_name
         self.primary_process_id = primary_process_id
         self.is_review = is_review
-        self.libraries = libraries
         self.category_id = category_id
+
+        if libraries is None:
+            libraries = []
 
     def __eq__(self, other):
         """__eq__."""
