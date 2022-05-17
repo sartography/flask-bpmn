@@ -2,9 +2,9 @@
 from flask_bpmn.models.db import db
 
 
-class GroupModel(db.Model):
-    """GroupModel."""
+class FlaskBpmnGroupModel(db.Model):
+    """FlaskBpmnGroupModel."""
 
-    __tablename__ = "groups"
+    __tablename__ = "group"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
