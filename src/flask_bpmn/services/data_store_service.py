@@ -182,7 +182,7 @@ class DataStoreBase:
                 return args[1]
 
     @staticmethod
-    def get_multi_common(study_id, user_id, file_id=None):
+    def get_multi_common(study_id: (str | None), user_id: (str | None), file_id: (str | None) = None):
         """Get_multi_common."""
         results = db.session.query(DataStoreModel).filter_by(
             study_id=study_id, user_id=user_id, file_id=file_id
