@@ -221,7 +221,7 @@ def handle_invalid_usage(error: ApiError) -> tuple[str, int]:
 
 
 @api_error_blueprint.app_errorhandler(InternalServerError)
-def handle_internal_server_error(error: ApiError) -> tuple[str, int]:
+def handle_internal_server_error(error: InternalServerError) -> tuple[str, int]:
     """Handles internal server error."""
     original = getattr(error, "original_exception", None)
     api_error = ApiError(code="Internal Server Error (500)", message=str(original))
