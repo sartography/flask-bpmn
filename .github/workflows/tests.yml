@@ -161,7 +161,7 @@ jobs:
       - name: SonarCloud Scan
         # thought about just skipping dependabot, but skipping all pull requests seems better, since none of them will have access to sonarcloud
         # if: ${{ github.actor != 'dependabot[bot]' }}
-        if: ${{ github.event_name != 'pull_request'
+        if: ${{ github.event_name != 'pull_request' }}
         uses: sonarsource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
