@@ -39,7 +39,7 @@ Flask Bpmn
 Features
 --------
 
-* TODO
+* Provides bmpn engine functionality for inclusion in a flask application.
 
 
 Requirements
