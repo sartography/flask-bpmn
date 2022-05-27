@@ -157,6 +157,9 @@ jobs:
 
       - name: Upload coverage report
         uses: codecov/codecov-action@v3.1.0
+        with:
+          # server is flaky. see https://github.com/codecov/codecov-action/issues/598
+          fail_ci_if_error: false
 
       - name: SonarCloud Scan
         # thought about just skipping dependabot
