@@ -1,19 +1,24 @@
 """Db."""
+from __future__ import annotations
+from typing import Type
+
 from flask_migrate import Migrate  # type: ignore
 from flask_sqlalchemy import SQLAlchemy  # type: ignore
 from sqlalchemy import event  # type: ignore
+from sqlalchemy.orm.mapper import Mapper  # type: ignore
+from sqlalchemy.engine.base import Connection  # type: ignore
 import time
 
 db = SQLAlchemy()
 migrate = Migrate()
 
 
-class SpiffworkflowBaseDBModel(db.Model):
+class SpiffworkflowBaseDBModel(db.Model):  # type: ignore
     """SpiffworkflowBaseDBModel."""
     __abstract__ = True
 
     @classmethod
-    def _all_subclasses(cls):
+    def _all_subclasses(cls) -> list[Type[SpiffworkflowBaseDBModel]]:
         """Get all subclasses of cls, descending.
 
         So, if A is a subclass of B is a subclass of cls, this
@@ -31,7 +36,7 @@ class SpiffworkflowBaseDBModel(db.Model):
         return result
 
 
-def update_created_modified_on_create_listener(mapper, connection, target):
+def update_created_modified_on_create_listener(mapper: Mapper, _connection: Connection, target: SpiffworkflowBaseDBModel) -> None:
     """Event listener that runs before a record is updated, and sets the create/modified field accordingly."""
     if "created_at_in_seconds" in mapper.columns.keys():
         target.created_at_in_seconds = round(time.time())
@@ -39,14 +44,14 @@ def update_created_modified_on_create_listener(mapper, connection, target):
         target.updated_at_in_seconds = round(time.time())
 
 
-def update_modified_on_update_listener(mapper, connection, target):
+def update_modified_on_update_listener(mapper: Mapper, _connection: Connection, target: SpiffworkflowBaseDBModel) -> None:
     """Event listener that runs before a record is updated, and sets the modified field accordingly."""
     if "updated_at_in_seconds" in mapper.columns.keys():
         if db.session.is_modified(target, include_collections=False):
             target.updated_at_in_seconds = round(time.time())
 
 
-def add_listeners():
+def add_listeners() -> None:
     """Adds the listeners to all subclasses.
 
     This should be called after importing all subclasses
