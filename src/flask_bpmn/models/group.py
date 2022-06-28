@@ -1,8 +1,9 @@
 """Group."""
 from flask_bpmn.models.db import db
+from flask_bpmn.models.db import SpiffworkflowBaseDBModel
 
 
-class FlaskBpmnGroupModel(db.Model):  # type: ignore
+class FlaskBpmnGroupModel(SpiffworkflowBaseDBModel):  # type: ignore
     """FlaskBpmnGroupModel."""
 
     __tablename__ = "group"
