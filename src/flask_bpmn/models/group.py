@@ -3,7 +3,7 @@ from flask_bpmn.models.db import db
 from flask_bpmn.models.db import SpiffworkflowBaseDBModel
 
 
-class FlaskBpmnGroupModel(SpiffworkflowBaseDBModel):  # type: ignore
+class FlaskBpmnGroupModel(SpiffworkflowBaseDBModel):
     """FlaskBpmnGroupModel."""
 
     __tablename__ = "group"
