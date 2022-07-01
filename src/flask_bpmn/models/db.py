@@ -32,6 +32,7 @@ class SpiffworkflowBaseDBModel(db.Model):  # type: ignore
             next = children.pop()
             subclasses = next.__subclasses__()
             result.append(next)
+            # check subclasses of subclasses SpiffworkflowBaseDBModel. i guess we only go down to grandchildren, which seems cool.
             for subclass in subclasses:
                 children.append(subclass)
         return result
