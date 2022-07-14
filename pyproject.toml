@@ -19,17 +19,13 @@ Changelog = "https://github.com/sartography/flask-bpmn/releases"
 python = "^3.7"
 click = "^8.0.1"
 flask = "*"
-flask-admin = "*"
-flask-bcrypt = "*"
-flask-cors = "*"
-flask-mail = "*"
 flask-marshmallow = "*"
 flask-migrate = "*"
-flask-restful = "*"
 werkzeug = "*"
 # spiffworkflow = {git = "https://github.com/sartography/SpiffWorkflow", rev = "main"}
 # spiffworkflow = {develop = true, path = "/home/jason/projects/github/sartography/SpiffWorkflow"}
-spiffworkflow = {git = "https://github.com/sartography/SpiffWorkflow", rev = "feature/parse_spiffworkflow_extensions"}
+# spiffworkflow = {git = "https://github.com/sartography/SpiffWorkflow", rev = "feature/spiff_properties"}
+spiffworkflow = "*"
 sentry-sdk = "1.7.1"
 sphinx-autoapi = "^1.8.4"
 

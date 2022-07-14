@@ -10,7 +10,7 @@ from flask import current_app
 from flask import g
 from marshmallow import Schema
 from SpiffWorkflow import WorkflowException  # type: ignore
-from SpiffWorkflow.exceptions import WorkflowTaskExecException  # type: ignore
+from SpiffWorkflow.bpmn.exceptions import WorkflowTaskExecException  # type: ignore
 from SpiffWorkflow.specs.base import TaskSpec  # type: ignore
 from SpiffWorkflow.task import Task  # type: ignore
 from werkzeug.exceptions import InternalServerError
