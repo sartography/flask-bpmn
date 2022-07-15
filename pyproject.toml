@@ -30,7 +30,7 @@ werkzeug = "*"
 # spiffworkflow = {git = "https://github.com/sartography/SpiffWorkflow", rev = "main"}
 # spiffworkflow = {develop = true, path = "/home/jason/projects/github/sartography/SpiffWorkflow"}
 spiffworkflow = {git = "https://github.com/sartography/SpiffWorkflow", rev = "feature/parse_spiffworkflow_extensions"}
-sentry-sdk = "1.7.1"
+sentry-sdk = "1.7.2"
 sphinx-autoapi = "^1.8.4"
 
 
