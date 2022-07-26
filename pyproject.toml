@@ -31,7 +31,7 @@ werkzeug = "*"
 # spiffworkflow = {develop = true, path = "/home/jason/projects/github/sartography/SpiffWorkflow"}
 spiffworkflow = {git = "https://github.com/sartography/SpiffWorkflow", rev = "feature/parse_spiffworkflow_extensions"}
 sentry-sdk = "1.8.0"
-sphinx-autoapi = "^1.8.4"
+sphinx-autoapi = "^1.9.0"
 
 
 [tool.poetry.dev-dependencies]
