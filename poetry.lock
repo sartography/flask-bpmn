@@ -533,7 +533,7 @@ restructuredtext-lint = "*"
 
 [[package]]
 name = "flask"
-version = "2.2.0"
+version = "2.2.1"
 description = "A simple framework for building complex web applications."
 category = "main"
 optional = false
@@ -547,8 +547,8 @@ Jinja2 = ">=3.0"
 Werkzeug = ">=2.2.0"
 
 [package.extras]
-dotenv = ["python-dotenv"]
 async = ["asgiref (>=3.2)"]
+dotenv = ["python-dotenv"]
 
 [[package]]
 name = "flask-admin"
@@ -2126,8 +2126,8 @@ flake8-rst-docstrings = [
     {file = "flake8_rst_docstrings-0.2.7-py3-none-any.whl", hash = "sha256:5d56075dce360bcc9c6775bfe7cb431aa395de600ca7e8d40580a28d50b2a803"},
 ]
 flask = [
-    {file = "Flask-2.2.0-py3-none-any.whl", hash = "sha256:10dc2bae7a9b6ab59111d6dbece2e08fb0015d2e88d296c40323cc0c7aac2c2e"},
-    {file = "Flask-2.2.0.tar.gz", hash = "sha256:98b33b13ad76ee9c7a80d2f56a6c578780e55bf8281790c62d50d4b7fadec2b8"},
+    {file = "Flask-2.2.1-py3-none-any.whl", hash = "sha256:3c604c48c3d5b4c63e72134044c0b4fe90ff01ef65280b9fe2d38c8860d99fe5"},
+    {file = "Flask-2.2.1.tar.gz", hash = "sha256:9c2b81b9b1edcc835af72d600f1955e713a065e7cb41d7e51ee762b449d9c65d"},
 ]
 flask-admin = [
     {file = "Flask-Admin-1.6.0.tar.gz", hash = "sha256:424ffc79b7b0dfff051555686ea12e86e48dffacac14beaa319fb4502ac40988"},
