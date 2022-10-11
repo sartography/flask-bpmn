@@ -9,8 +9,8 @@ from flask import Blueprint
 from flask import current_app
 from flask import g
 from marshmallow import Schema
-from SpiffWorkflow.exceptions import WorkflowException  # type: ignore
 from SpiffWorkflow.bpmn.exceptions import WorkflowTaskExecException  # type: ignore
+from SpiffWorkflow.exceptions import WorkflowException  # type: ignore
 from SpiffWorkflow.specs.base import TaskSpec  # type: ignore
 from SpiffWorkflow.task import Task  # type: ignore
 from werkzeug.exceptions import InternalServerError
@@ -23,7 +23,7 @@ class ApiError(Exception):
 
     def __init__(
         self,
-        code: str,
+        error_code: str,
         message: str,
         status_code: int = 400,
         file_name: str = "",
@@ -43,7 +43,7 @@ class ApiError(Exception):
         if task_trace is None:
             task_trace = {}
         self.status_code = status_code
-        self.code = code  # a short consistent string describing the error.
+        self.error_code = error_code  # a short consistent string describing the error.
         self.message = message  # A detailed message that provides more information.
 
         # OPTIONAL:  The id of the task in the BPMN Diagram.
@@ -89,7 +89,7 @@ class ApiError(Exception):
     @classmethod
     def from_task(
         cls,
-        code: str,
+        error_code: str,
         message: str,
         task: Task,
         status_code: int = 400,
@@ -100,7 +100,7 @@ class ApiError(Exception):
         task_trace: dict | None = None,
     ) -> ApiError:
         """Constructs an API Error with details pulled from the current task."""
-        instance = cls(code, message, status_code=status_code)
+        instance = cls(error_code, message, status_code=status_code)
         instance.task_id = task.task_spec.name or ""
         instance.task_name = task.task_spec.description or ""
         instance.file_name = task.workflow.spec.file or ""
@@ -163,19 +163,19 @@ class ApiError(Exception):
     @classmethod
     def from_workflow_exception(
         cls,
-        code: str,
+        error_code: str,
         message: str,
         exp: WorkflowException,
     ) -> ApiError:
         """Deals with workflow exceptions.
 
         We catch a lot of workflow exception errors,
-        so consolidating the code, and doing the best things
+        so consolidating the error_code, and doing the best things
         we can with the data we have.
         """
         if isinstance(exp, WorkflowTaskExecException):
             return ApiError.from_task(
-                code,
+                error_code,
                 message,
                 exp.task,
                 line_number=exp.line_number,
@@ -186,7 +186,7 @@ class ApiError(Exception):
             )
 
         else:
-            return ApiError.from_task_spec(code, message, exp.sender)
+            return ApiError.from_task_spec(error_code, message, exp.sender)
 
 
 class ApiErrorSchema(Schema):
@@ -196,7 +196,7 @@ class ApiErrorSchema(Schema):
         """Sets the fields to search the error schema for."""
 
         fields = (
-            "code",
+            "error_code",
             "message",
             "workflow_name",
             "file_name",
@@ -224,6 +224,8 @@ def handle_invalid_usage(error: ApiError) -> tuple[str, int]:
 def handle_internal_server_error(error: InternalServerError) -> tuple[str, int]:
     """Handles internal server error."""
     original = getattr(error, "original_exception", None)
-    api_error = ApiError(code="Internal Server Error (500)", message=str(original))
+    api_error = ApiError(
+        error_code="Internal Server Error (500)", message=str(original)
+    )
     response = ApiErrorSchema().dump(api_error)
     return response, 500

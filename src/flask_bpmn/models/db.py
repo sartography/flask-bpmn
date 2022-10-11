@@ -1,7 +1,9 @@
 """Db."""
 from __future__ import annotations
 
+import enum
 import time
+from typing import Any
 
 from flask_migrate import Migrate  # type: ignore
 from flask_sqlalchemy import SQLAlchemy  # type: ignore
