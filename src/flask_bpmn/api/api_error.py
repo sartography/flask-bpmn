@@ -168,17 +168,20 @@ def set_user_sentry_context() -> None:
     set_user({"username": username})
 
 
-@api_error_blueprint.app_errorhandler(ApiError)
-def handle_invalid_usage(error: ApiError) -> flask.wrappers.Response:
-    """Handles invalid usage error."""
-    current_app.logger.exception(error)
-    return make_response(jsonify(error), error.status_code)
-
-
 @api_error_blueprint.app_errorhandler(Exception)
-def handle_internal_server_exception(exception: Exception) -> flask.wrappers.Response:
+def handle_exception(exception: Exception) -> flask.wrappers.Response:
     """Handles unexpected exceptions."""
     current_app.logger.exception(exception)
+    set_user_sentry_context()
+    id = capture_exception(exception)
+
+    organization_slug = current_app.config.get("SENTRY_ORGANIZATION_SLUG")
+    project_slug = current_app.config.get("SENTRY_PROJECT_SLUG")
+    sentry_link = None
+    if organization_slug and project_slug:
+        sentry_link = (
+            f"https://sentry.io/{organization_slug}/{project_slug}/events/{id}"
+        )
 
     # set api_exception like this to avoid confusing mypy
     # and what type the object is
@@ -186,21 +189,11 @@ def handle_internal_server_exception(exception: Exception) -> flask.wrappers.Res
     if isinstance(exception, ApiError):
         api_exception = exception
     else:
-        set_user_sentry_context()
-        id = capture_exception(exception)
-
-        organization_slug = current_app.config.get("SENTRY_ORGANIZATION_SLUG")
-        project_slug = current_app.config.get("SENTRY_PROJECT_SLUG")
-        sentry_link = None
-        if organization_slug and project_slug:
-            sentry_link = (
-                f"https://sentry.io/{organization_slug}/{project_slug}/events/{id}"
-            )
-
         api_exception = ApiError(
             error_code="internal_server_error",
             message=f"{exception.__class__.__name__}",
             sentry_link=sentry_link,
             status_code=500,
         )
+
     return make_response(jsonify(api_exception), api_exception.status_code)
