@@ -52,7 +52,7 @@ spiffworkflow = {git = "https://github.com/sartography/SpiffWorkflow", rev = "ma
 # 1.7.3 broke us. https://github.com/PyCQA/bandit/issues/841
 bandit = "1.7.2"
 
-flake8-bugbear = "^22.7.1"
+flake8-bugbear = "^22.10.27"
 flake8-docstrings = "^1.6.0"
 flake8-rst-docstrings = "^0.2.7"
 pep8-naming = "^0.13.2"
