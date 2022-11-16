@@ -51,7 +51,7 @@ flake8-bandit = "^2.1.2"
 spiffworkflow = {git = "https://github.com/sartography/SpiffWorkflow", rev = "main"}
 
 # 1.7.3 broke us. https://github.com/PyCQA/bandit/issues/841
-bandit = "1.7.2"
+bandit = "1.7.4"
 
 flake8-bugbear = "^22.10.27"
 flake8-docstrings = "^1.6.0"
